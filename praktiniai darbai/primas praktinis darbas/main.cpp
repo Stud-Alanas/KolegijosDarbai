@@ -40,13 +40,20 @@ void spausdintiValiutas () {
     cout << "3 - USD\n";
     cout << "4 - INR\n";
 }
+
+string gautiValiuta (int v) {
+    if (v == 1) return "EUR";
+    if (v == 2) return "GBP";
+    if (v == 3) return "USD";
+    if (v == 4) return "INR";
+}
 int main() {
     int pasirinkimas = -1;
     while (pasirinkimas != 0) {
         cout << "\n== Valiutos keitykla ===\n";
         cout << "1 - Kurso palyginimas\n";
-        cout << "2 - Pirkti valiuta (is EUR -> Valiuta)\n";
-        cout << "3 - Parduoti valiuta (is Valiutos -> EUR)\n";
+        cout << "2 - Pirkti valiuta ( EUR -> Valiuta )\n";
+        cout << "3 - Parduoti valiuta ( Valiutos -> EUR )\n";
         cout << "Pasirinkimas: ";
         cin >> pasirinkimas;
 
@@ -58,6 +65,7 @@ int main() {
                 spausdintiValiutas();
                 cout << "Pasirinkite valiuta: ";
                 cin >> v;
+                string valiuta = gautiValiuta(v);
                 if (v < 1 || v > 4) {
                     cout << "Blogas pasirinkimas.\n";
                     break;
@@ -65,9 +73,9 @@ int main() {
                 gautiKursus(v, bendras, pirkti, parduoti);
 
                 cout << fixed << setprecision(4);
-                cout << "Bendras kursas: 1 EUR = " << bendras << "(Pasirinkta valiuta)\n";
-                cout << "Pirkti kursas: 1 EUR = " << pirkti << "(Pasirinkta valiuta)\n";
-                cout << "Parduoti kursas: 1 (valiuta) = " << parduoti << "EUR\n";
+                cout << "Bendras kursas: 1 EUR = " << bendras << valiuta << " \n";
+                cout << "Pirkti kursas: 1 EUR = " << pirkti << valiuta << " \n";
+                cout << "Parduoti kursas: 1 " << valiuta << " = " << parduoti << " EUR \n";
                 break;
 
             }
@@ -80,6 +88,7 @@ int main() {
                 spausdintiValiutas();
                 cout << "Kuria valiuta perki?: ";
                 cin >> v;
+                string valiuta = gautiValiuta(v);
 
                 if (v < 1 || v > 4) {
                     cout << "Blogas pasirinkimas.\n";
@@ -93,9 +102,39 @@ int main() {
                 rezultatas = apvalinti(rezultatas);
 
                 cout << fixed << setprecision(2);
-                cout << eur << " EUR --> " << rezultatas << "(valiuta)\n";
+                cout << eur << " EUR --> " << rezultatas << valiuta << " \n";
                 break;
             }
+                case 3: {
+                int v;
+                double bendras, pirkti, parduoti;
+                double kiekis, eur;
+
+                cout << "\n--- Parduoti valiuta ---\n";
+                spausdintiValiutas();
+                cout << "Kuria valiuta parduodi?: ";
+                cin >> v;
+                string valiuta = gautiValiuta(v);
+
+                if (v < 1 || v > 4) {
+                    cout << "Blogas pasirinkimas.\n";
+                    break;
+                }
+                cout << "Ivesk EUR kieki: ";
+                cin >> kiekis;
+                gautiKursus(v, bendras, pirkti, parduoti);
+                eur = kiekis * parduoti;
+                eur = apvalinti(eur);
+
+                cout << fixed << setprecision(2);
+                cout << kiekis << valiuta << " -> " << eur << " EUR \n";
+                break;
+            }
+            case 0:
+                cout << "Geros dienos\n";
+                break;
+                default:
+                cout << "Neteisingas pasirinkimas.\n";
         }
     }
     return 0;
