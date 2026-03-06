@@ -86,7 +86,7 @@ int main() {
 
                 cout << "\n--- Pirkti valiuta ---\n";
                 spausdintiValiutas();
-                cout << "Kuria valiuta perki?: ";
+                cout << "Pirkti valiuta(Pasirinkite valiuta): ";
                 cin >> v;
                 string valiuta = gautiValiuta(v);
 
@@ -110,7 +110,7 @@ int main() {
                 double bendras, pirkti, parduoti;
                 double kiekis, eur;
 
-                cout << "\n--- Parduoti valiuta ---\n";
+                cout << "\n--- Parduoti valiuta (Nusipirkti EUR) ---\n";
                 spausdintiValiutas();
                 cout << "Kuria valiuta parduodi?: ";
                 cin >> v;
@@ -120,7 +120,7 @@ int main() {
                     cout << "Blogas pasirinkimas.\n";
                     break;
                 }
-                cout << "Ivesk EUR kieki: ";
+                cout << "Ivesk " << valiuta << " kieki: ";
                 cin >> kiekis;
                 gautiKursus(v, bendras, pirkti, parduoti);
                 eur = kiekis * parduoti;
