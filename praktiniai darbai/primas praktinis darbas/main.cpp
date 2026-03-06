@@ -41,6 +41,62 @@ void spausdintiValiutas () {
     cout << "4 - INR\n";
 }
 int main() {
+    int pasirinkimas = -1;
+    while (pasirinkimas != 0) {
+        cout << "\n== Valiutos keitykla ===\n";
+        cout << "1 - Kurso palyginimas\n";
+        cout << "2 - Pirkti valiuta (is EUR -> Valiuta)\n";
+        cout << "3 - Parduoti valiuta (is Valiutos -> EUR)\n";
+        cout << "Pasirinkimas: ";
+        cin >> pasirinkimas;
 
+        switch (pasirinkimas) {
+            case 1: {
+                int v;
+                double bendras, pirkti, parduoti;
+                cout << "\n--- Kurso palyginimas ---\n";
+                spausdintiValiutas();
+                cout << "Pasirinkite valiuta: ";
+                cin >> v;
+                if (v < 1 || v > 4) {
+                    cout << "Blogas pasirinkimas.\n";
+                    break;
+                }
+                gautiKursus(v, bendras, pirkti, parduoti);
+
+                cout << fixed << setprecision(4);
+                cout << "Bendras kursas: 1 EUR = " << bendras << "(Pasirinkta valiuta)\n";
+                cout << "Pirkti kursas: 1 EUR = " << pirkti << "(Pasirinkta valiuta)\n";
+                cout << "Parduoti kursas: 1 (valiuta) = " << parduoti << "EUR\n";
+                break;
+
+            }
+            case 2: {
+                int v;
+                double bendras, pirkti, parduoti;
+                double eur, rezultatas;
+
+                cout << "\n--- Pirkti valiuta ---\n";
+                spausdintiValiutas();
+                cout << "Kuria valiuta perki?: ";
+                cin >> v;
+
+                if (v < 1 || v > 4) {
+                    cout << "Blogas pasirinkimas.\n";
+                    break;
+                }
+                cout << "Ivesk EUR kieki: ";
+                cin >> eur;
+
+                gautiKursus(v, bendras, pirkti, parduoti);
+                rezultatas = eur * pirkti;
+                rezultatas = apvalinti(rezultatas);
+
+                cout << fixed << setprecision(2);
+                cout << eur << " EUR --> " << rezultatas << "(valiuta)\n";
+                break;
+            }
+        }
+    }
     return 0;
 }
