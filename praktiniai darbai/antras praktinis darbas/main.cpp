@@ -119,8 +119,79 @@ void atnaujintiPazymi(string vardai[], int pazymiai[][MAX_PAZYMIU], int pazymiuK
     pazymiai[mokNr][pazNr - 1] = naujas;
     cout << "Pazymys sekmingai atnaujintas.\n";
 }
+// Funkcija mokiniui ištrinti
+void salintiMokini(string vardai[], int pazymiai[][MAX_PAZYMIU], int pazymiuKiekis[], int &mokiniuKiekis) {
+    if (mokiniuKiekis == 0) {
+        cout << "Sarasas tuscias.\n";
+        return;
+    }
+
+    int nr;
+    cout << "Iveskite mokinio numeri, kuri norite pasalinti (1-" << mokiniuKiekis << "): ";
+    cin >> nr;
+
+    if (nr < 1 || nr > mokiniuKiekis) {
+        cout << "Tokio mokinio nera.\n";
+        return;
+    }
+
+    nr--;
+
+    for (int i = nr; i < mokiniuKiekis - 1; i++) {
+        vardai[i] = vardai[i + 1];
+        pazymiuKiekis[i] = pazymiuKiekis[i + 1];
+
+        for (int j = 0; j < MAX_PAZYMIU; j++) {
+            pazymiai[i][j] = pazymiai[i + 1][j];
+        }
+    }
+
+    mokiniuKiekis--;
+    cout << "Mokinys sekmingai pasalintas.\n";
+}
 
 int main() {
+    string vardai[MAX_MOKINIU];
+    int pazymiai[MAX_MOKINIU][MAX_PAZYMIU];
+    int pazymiuKiekis[MAX_MOKINIU];
+    int mokiniuKiekis = 0;
+    int pasirinkimas;
+
+    do {
+        cout << "\n===== MOKINIU PAZYMIU SISTEMA =====\n";
+        cout << "1. Prideti mokini\n";
+        cout << "2. Rodyti visus mokinius\n";
+        cout << "3. Rodyti konkretaus mokinio pazymius\n";
+        cout << "4. Atnaujinti pazymi\n";
+        cout << "5. Pasalinti mokini\n";
+        cout << "0. Baigti darba\n";
+        cout << "Pasirinkite veiksma: ";
+        cin >> pasirinkimas;
+
+        switch (pasirinkimas) {
+            case 1:
+                pridetiMokini(vardai, pazymiai, pazymiuKiekis, mokiniuKiekis);
+                break;
+            case 2:
+                rodytiVisus(vardai, pazymiai, pazymiuKiekis, mokiniuKiekis);
+                break;
+            case 3:
+                rodytiViena(vardai, pazymiai, pazymiuKiekis, mokiniuKiekis);
+                break;
+            case 4:
+                atnaujintiPazymi(vardai, pazymiai, pazymiuKiekis, mokiniuKiekis);
+                break;
+            case 5:
+                salintiMokini(vardai, pazymiai, pazymiuKiekis, mokiniuKiekis);
+                break;
+            case 0:
+                cout << "Programa baigta.\n";
+                break;
+            default:
+                cout << "Neteisingas pasirinkimas.\n";
+        }
+
+    } while (pasirinkimas != 0);
 
     return 0;
 }
