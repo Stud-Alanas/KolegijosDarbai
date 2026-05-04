@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <string>
@@ -112,5 +111,51 @@ void printCheck(menuItemType menuList[], int kiekiai[], int menuSize) {
 }
 
 int main() {
+    menuItemType menuList[MAX_MENU];
+    int kiekiai[MAX_MENU];
 
+    int menuSize = 0;
+    int pasirinkimas;
+    int porcijos;
+
+    for (int i = 0; i < MAX_MENU; i++) {
+        kiekiai[i] = 0;
+    }
+
+    getData(menuList, menuSize);
+
+    if (menuSize == 0) {
+        cout << "Meniu tuscias arba nepavyko nuskaityti duomenu.\n";
+        return 0;
+    }
+
+    cout << "Sveiki atvyke i restorana \"Pusryciu restoranas\"\n";
+
+    do {
+        showMenu(menuList, menuSize);
+
+        cout << "\nPasirinkite patiekalo numeri: ";
+        cin >> pasirinkimas;
+
+        if (pasirinkimas > 0 && pasirinkimas <= menuSize) {
+            cout << "Kiek porciju norite? ";
+            cin >> porcijos;
+
+            if (porcijos > 0) {
+                kiekiai[pasirinkimas - 1] = kiekiai[pasirinkimas - 1] + porcijos;
+                cout << "Patiekalas pridetas.\n";
+            }
+            else {
+                cout << "Porciju kiekis turi buti didesnis uz 0.\n";
+            }
+        }
+        else if (pasirinkimas != 0) {
+            cout << "Tokio patiekalo nera.\n";
+        }
+
+    } while (pasirinkimas != 0);
+
+    printCheck(menuList, kiekiai, menuSize);
+
+    return 0;
 }
