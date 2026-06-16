@@ -8,43 +8,45 @@ using namespace std;
 const int MAX_MENU = 50;
 const double PVM = 0.21;
 
-//sukuriame struktura vienam patiekalui
+//sukuriame struktura vienam patiekalui saugoti
 struct menuItemType {
     string menuItem;
     double menuPrice;
 };
-//skaitom failą kaip masyvą
+//skaitom failą
 void getData(menuItemType menuList[], int &menuSize) {
-    ifstream fin;
+    ifstream fin; //padarom failo skaitymo objekta
     fin.open("menu.txt");
-
+//tikriname failo atsidarima
     if (!fin.is_open()) {
         cout << "Nepavyko atidaryti menu.txt failo.\n";
         return;
     }
 
     menuSize = 0;
-//nuskaitom patiekalo pavadinima iki musu faile ;
+
+//nuskaitom patiekalo pavadinima iki musu faile ; ir kol nevirsijame
     while (!fin.eof() && menuSize < MAX_MENU) {
         getline(fin, menuList[menuSize].menuItem, ';');
-
+//jei eilute tuscia nutraukiam skaityma
         if (menuList[menuSize].menuItem == "") {
             break;
         }
-
+//nuskaitom patiekalo kaina
         fin >> menuList[menuSize].menuPrice;
         fin.ignore(1000, '\n');
-
+//papildom nuskaitytu patiekalu kieki
         menuSize++;
     }
 
     fin.close();
 }
+//uzdarom txt faila ir baigiam jo skaityma
 //ispausdiname visa meniu ekrane
 void showMenu(menuItemType menuList[], int menuSize) {
     cout << "\n===== PUSRYCIU MENIU =====\n";
     cout << fixed << setprecision(2);
-
+//pradedam spasudinima nuo vieneto
     for (int i = 0; i < menuSize; i++) {
         cout << i + 1 << ". " << menuList[i].menuItem
              << " - " << menuList[i].menuPrice << " EUR\n";
@@ -52,10 +54,10 @@ void showMenu(menuItemType menuList[], int menuSize) {
 
     cout << "0. Baigti pasirinkima\n";
 }
-
+//funkcija apskaiciuoti ir ispausdinti ceki
 void printCheck(menuItemType menuList[], int kiekiai[], int menuSize) {
-    ofstream fout;
-    fout.open("receipt.txt");
+    ofstream fout;  //cia sukuriam failo rasymo objekta
+    fout.open("receipt.txt"); //sukuriam receipt.txt
 
     double suma = 0;
 
@@ -68,32 +70,35 @@ void printCheck(menuItemType menuList[], int kiekiai[], int menuSize) {
     cout << "Jusu uzsakymas:\n";
     fout << "Jusu uzsakymas:\n";
 
+//tikriname ar vartotojas kazka pasirinko
     bool arYra = false;
 
     for (int i = 0; i < menuSize; i++) {
+        //jei patiekalo kiekis didesnis uz 0, reiskia vartotojas padare pasirinkima
         if (kiekiai[i] > 0) {
             double eilutesSuma = menuList[i].menuPrice * kiekiai[i];
 
             cout << kiekiai[i] << " x " << menuList[i].menuItem
                  << "  " << menuList[i].menuPrice << " EUR"
                  << " = " << eilutesSuma << " EUR\n";
-
+            //irasom i faila
             fout << kiekiai[i] << " x " << menuList[i].menuItem
                  << "  " << menuList[i].menuPrice << " EUR"
                  << " = " << eilutesSuma << " EUR\n";
 
             suma = suma + eilutesSuma;
+
             arYra = true;
         }
     }
-
+    //jei vartotojas nieko nepasirinko
     if (!arYra) {
         cout << "Nieko nepasirinkote.\n";
         fout << "Nieko nepasirinkote.\n";
         fout.close();
         return;
     }
-
+    //PVM apskaiciavimas
     double mokestis = suma * PVM;
     double galutineSuma = suma + mokestis;
 
@@ -111,7 +116,9 @@ void printCheck(menuItemType menuList[], int kiekiai[], int menuSize) {
 }
 
 int main() {
+
     menuItemType menuList[MAX_MENU];
+
     int kiekiai[MAX_MENU];
 
     int menuSize = 0;
@@ -121,7 +128,7 @@ int main() {
     for (int i = 0; i < MAX_MENU; i++) {
         kiekiai[i] = 0;
     }
-
+//duomenis is failo menu
     getData(menuList, menuSize);
 
     if (menuSize == 0) {
@@ -130,7 +137,7 @@ int main() {
     }
 
     cout << "Sveiki atvyke i restorana \"Pusryciu restoranas\"\n";
-
+    //parodom menu
     do {
         showMenu(menuList, menuSize);
 

@@ -46,6 +46,7 @@ string gautiValiuta (int v) {
     if (v == 2) return "GBP";
     if (v == 3) return "USD";
     if (v == 4) return "INR";
+    return "";
 }
 int main() {
     int pasirinkimas = -1;
@@ -123,7 +124,7 @@ int main() {
                 cout << "Ivesk " << valiuta << " kieki: ";
                 cin >> kiekis;
                 gautiKursus(v, bendras, pirkti, parduoti);
-                eur = kiekis * parduoti;
+                eur = kiekis / parduoti;
                 eur = apvalinti(eur);
 
                 cout << fixed << setprecision(2);
